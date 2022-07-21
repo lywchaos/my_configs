@@ -138,5 +138,91 @@ skip over
 </details>
 
 <details><summary>usr_10.Making big changes</summary>
+按q可以录制宏：27
+
+录制的宏可能跟平时的按键冲突了，怎么解决：92
+
+录制好的宏也可以appending新的内容：117
+
+查找并替换，也就是常用的:s命令：155
+
+命令的范围，常见的有当前行，最后行，以及range是可pattern可加减的：249
+
+范围也可以用MARK来指示：295
+
+substitue是查找替换，global是查找并执行：343
+
+:read {filename}可以把文件的内容插入到光标之后，也可以指定位置插入：574
+类似的，可以把当前文件写入到其它文件
+
+代码格式化：622
+
+改变大小写：668
+
+!{motion}{program}，将文件的一部分作为输入来执行bash命令：693
+例如以下4行，把光标放在4上，然后输入!4jsort，再回车，就按顺序了，注意这里不需要冒号
+4
+3
+2
+1
+另外比如直接!jecho "hello"，猜是什么效果
+
+关于这样的命令是如何执行的，你可以通过这些设置来更改：757
+
+前面讲了如何吃掉文本作输入，来执行命令并输出到当前文本，其实也可以直接将命令的输出到当前文本：763
+
+也可以直接将当前文本作输入，给外部命令执行，结果会显示在一个temp的窗口中：809
+
+
+</details>
+
+<details><summary>usr_11.txt Recovering from a crash</summary>
+
+
+</details>
+
+<details><summary>usr_12.txt Clever tricks</summary>
+整词匹配pattern用法：26
+
+宏不只可以录制单文件命令，也可以录制诸如:wnext这样的命令，从而一次更改多个文件：54
+
+一个tricky的前后单词位置互换方法：91
+
+一个tricky的多行排序方法：131
+
+通过global和pattern和move来实现文本上下翻转：178
+
+一个特定的快速查找当前文本所对应的命令帮助的方法：232（但是我更想要通用方法，怎么在nvim里面打开一个新窗口的内容是终端呢？）
+
+一个消除行后空格的方法：264
+
+一个vim所有包含某个patter的文件的方法：298
+最终还是要找到行才能修改：324
+</details>
+
+<details><summary>usr_20.txt Typing commaid-line commands quickly</summary>
+总体来讲就是一些让输入vim命令更容易的方法，但是又要记一堆东西，其实没必要
+
+</details>
+
+<details><summary>usr_21.txt Go away and come back</summary>
+执行shell命令：48
+
+回到退出前视图：148
+
+最近访问的文件：174
+
+vim会话：229
+
+感觉这节除了shell命令以外，也没什么好看的
+
+</details>
+
+<details><summary>usr_22.txt Finding the file to edit</summary>
+其实就是目录，这个用nerdtree插件其实也是一样的
+
+vim文件跳转，但是依赖于path变量：214
+
+然后是buffer的介绍，vim编辑的时候其实就是在写buffer，然后后面才把buffer写入文件来修改文件
 
 </details>
