@@ -226,3 +226,136 @@ vim文件跳转，但是依赖于path变量：214
 然后是buffer的介绍，vim编辑的时候其实就是在写buffer，然后后面才把buffer写入文件来修改文件
 
 </details>
+
+
+<details><summary>usr_23.txt Editing other files</summary>
+不同系统的换行符是不同的，vim可以通过设置来帮我们减轻心智负担：22
+
+另外是如何编辑网络文件，二进制文件，压缩文件的内容
+
+</details>
+
+
+<details><summary>usr_24.txt Inserting quickly</summary>
+如何在插入模式下快速更改内容，而不用在模式间切换：39
+这个还是有点用的，不用一直按esc了，但是c-left这样的按键其实不是很友好的
+
+一些自动补全的方法，最简单的是c-p和c-n，还可以根据你要补全的内容，来使用不同的快捷键：120
+
+在插入模式下，c-a可以重复你上次在插入模式输入的文本，c-@的额外功能是退出插入模式：269
+
+一个不太实用的复制方法，得先把单词存到寄存器里面，然后再复制，太麻烦了：347
+
+还有一些缩写的方法，自己输入一点，让vim自动扩展缩写，但是我感觉不太实用
+
+输入特殊字符的方法：494
+
+个人感觉最实用的方法，在insert mode下通过c-o来使用一次普通模式的命令：584
+</details>
+
+<details><summary>usr_25.txt Editing formatted text</summary>
+通过:set textwidth来实现自动换行：23
+
+代码格式化：67
+
+左右和居中对齐：133
+
+:wrap来使超出屏幕的行来适应屏幕显示：297
+
+有时候换行的时候在单词中间换行了，这是我们不愿见到的：375
+
+把一段变成一行：427
+
+后面是如何处理表格内容
+</details>
+
+<details><summary>usr_26.txt Repeating</summary>
+gv快速选中之前选中的位置：22
+
+c-a把当前位置及之后的数字＋1，并将光标移动到那个数字，c-x是减：48
+
+通过:arg前缀命令来对一批文件执行相同命令：93
+
+vim命令也可以用来像shell命令一样写成脚本来使用：126
+</details>
+
+
+<details><summary>usr_27.txt Search commands and pattern</summary>
+通过设置来实现查找时忽略大小写：27
+
+可以在输入搜索命令时显式说明该搜索是否忽略大小写：61
+
+一些通配符：240
+</details>
+
+<details><summary>usr_28.txt Folding</summary>
+手动折叠的精髓在于以下概念：zf是折叠的操作符，这个操作符后面可以跟一个text object或者一个move来对内容进行折叠。另外，zo是打开折叠，zc是关闭折叠，zr打开所有同级折叠，zR递归打开当前所有折叠，zm和zM相反：55
+
+可以删除folder而不删除内容：152
+
+:mkview用来保存当前文件中的folder，不然你关掉再开就会发现folder不见了：204
+
+通过:set foldmethod来使用自动折叠，比如按indent折叠：222
+
+也可以按marker折叠：270
+
+后面还有按语法折叠，按表达式折叠，在diff中折叠相同内容的行之类的：426
+
+</details>
+
+<details><summary>usr_29.txt Moving through programs</summary>
+通过tag来实现跳转到函数定义：24
+
+用新的split来跳转：104
+</details>
+
+
+<details><summary>usr_30.txt Editing programs</summary>
+可以在vim里通过命令来直接进行代码的编译和报错信息的查看，也可以通过设置来更换编译的方法之类的，感觉不太实用，我直接tmux一个新窗口感觉心智负担更少
+
+然后是一些缩进和C风格代码格式化之类的内容，比如=是一个运算符，==是格式化当前行，=a{是格式化这个大括号里面的内容，gg=G是格式化整个文件，看语法也可以发现，运算符后面可以跟一个text object或者一个move
+
+第三小节是讲通过设置来实现自动格式化：filetype indent on，这样可以根据文件的类型来实现对应的代码格式化功能，如果你不喜欢某种类型的自动代码格式化，也可以通过编辑文件来进行更改：281
+
+一些智能化比较低的自动格式方法（autoindent和smartindent）：337
+
+一些增加或减少缩进的方法：351
+在插入模式下，c-t和c-d分别增加和减少当前行的缩进
+在普通模式下，>是增加缩进运算符，>>是增加当前行缩进，<和<<则相反
+
+tab和space的和平共处：410
+
+后面讲了注释的格式化
+</details>
+
+<details><summary>usr_32.txt The undo tree</summary>
+感觉不会怎么用到，跳过了
+</details>
+
+<details><summary>usr_40.txt Make new commands</summary>
+关于key mapping，定义新命令，自动命令的一些内容，感觉比较高阶，不够通用
+</details>
+
+
+<details><summary>usr_41.txt Write a VIM script</summary>
+这节内容很多，就是写vim脚本，就像学一个小语言一样
+</details>
+
+
+<details><summary>usr_42.txt Add new menus</summary>
+自定义menu，感觉也是过于高阶，不怎么通用
+</details>
+
+
+<details><summary>usr_43.txt Using filetypes</summary>
+我们有一些通用的设置，但是这些设置我们想根据文件类型的不同来表现出不同的功能，比如对于不同的文件类型，让缩进的宽度也不同，这种情况的处理就是这节要讲的
+以及如果你编辑的文件类型vim识别不出来的话，你需要手动添加这种类型进去才可以发挥vim的作用
+</details>
+
+<details><summary>usr_44.txt Your own syntax highlighted</summary>
+根据文件类型来实现的语法高亮，如何为新文件类型设置语法高亮
+</details>
+
+<details><summary>usr_45.txt Selete your language</summary>
+关于语言（中英文）和编码的一些内容
+</details>
