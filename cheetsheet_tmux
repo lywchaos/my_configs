@@ -1,0 +1,9 @@
+c-b z : current window fullscreen and back
+
+c-b d : tmux detach
+
+tmux attach -t 0 : tmux attach session number 0
+
+c-b ? : show all command
+
+c-b , : rename current window
