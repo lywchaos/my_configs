@@ -1,19 +1,30 @@
+(bash) array : ${array[0]} to get the first element in array
 (bash) assignment expression : no spaces arount = 
-(bash) var=$(cmd) : assign the cmd output to var 
-(bash) var=$(cmd) WARNING : $(cmd) will be executed in a subshell , which means this cmd can't use other variables of the script
+(bash) if cmd1 then cmds fi : do cmds if the exit status of cmd1 is 0
+(bash) if [ condition ] then cmds fi : WARNING: one space around condition
+(bash) if test condition then cmds fi : condition can be [number compare/string compare/file compare]
+(bash) var=`cmd`/$(cmd) : assign the cmd output to var 
+(bash) var=`cmd`/$(cmd) WARNING : $(cmd) will be executed in a subshell , which means this cmd can't use other variables of the script
 (bash) $var : use the value of var
+(bash) ~ : WARNING: DO NOT use ~ as home path in scripts, use $HOME instead
+cmd1 | cmd2 : called pipe, the output of cmd1 as the input of cmd2; interestingly, cmd1 and cmd2 are not executed in sequence, but simultaneously
 cp arguments can be pattern
 cp from_file_path to_dir_path : copy file to dir, you can use '.' as to_dir_path
 cp from_file_path to_file_path : default OVERRIDE , -i if you wanna check whether or not you really want to copy;
 cp -R from_dir_path to_dir_path : copy dir 
 ls pattern : output ls results that match the pattern
 mkdir -p : create multilevel directory
+basename file_name : only return the name of file without the path
 mv from_file to_file/to_dir : move and rename
 set : show all enviroment variable
-cmd1 | cmd2 : called pipe, the output of cmd1 as the input of cmd2; interestingly, cmd1 and cmd2 are not executed in sequence, but simultaneously
 $? : the exit status of the last cmd
-(bash) if cmd1 then cmds fi : do cmds if the exit status of cmd1 is 0
-(bash) if test condition then cmds fi : condition can be [number compare/string compare/file compare]
-(bash) if [ condition ] then cmds fi : WARNING: one space around condition
-(bash) ~ : WARNING: DO NOT use ~ as home path in scripts, use $HOME instead
-(bash) array : ${array[0]} to get the first element in array
+(bash) var=$(( expression )) : $(( expression )) usually used for integer calculation; (( expression )) can also be used as condition; also one space around expression
+(bash) [[ expression ]] : ususally usrd for string compare, support pattern; also one space around expression
+(bash) for var in list do cmds done : typical list for; list can be something like /home/rich/test/* ,this is gonna loop the result file of all the files that match the pattern
+(bash) for (( i=1; i <= 10; i++ )) do cmds done : this is called c-style for-loop; NOTE THAT we use i instead of $i in conditions, and space is not necessary around operator. But do use $i in cmds.
+(bash) break/continue number : number default as 1, act like usual; but 2 3 are different
+(bash) IFS : internal field seperator, a environment variable, used to loop file content, can be used in scripts to change the default seperator
+(bash) done > output.txt : redirect the output
+(bash) if [ -n "$1" ] : test whether there is this positional argument
+(bash) $0 : the name of script; NOTE THAT the content of $0 depends on the file_name in cmd that you run the script
+(bash) $# : the number of arguments be input
