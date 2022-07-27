@@ -16,5 +16,5 @@ filetype plugin indent on
 
 " html字体背景颜色
 :iab htmlpwuq <font style="background:"></font><Left><Left><Left><Left><Left><Left><Left><Left><Left>
-" html字段文字颜色
+" html字体文字颜色
 :iab htmlpwuq <font color=""></font><Left><Left><Left><Left><Left><Left><Left><Left><Left>
