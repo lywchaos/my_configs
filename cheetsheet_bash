@@ -19,7 +19,7 @@
 (bash) pipeline : the output of cmd1 as the input of cmd2; interestingly, cmd1 and cmd2 are not executed in sequence, but simultaneously(cmd1 and cmd2 executed in seperated subshell).The exit status is the last cmd's exit status defaultly. But if pipefail is enabled, the status is the last non-zero cmd's status, or 0 if all success. NOTE THAT a single cmd is also a pipeline.
 (bash) single quote '' and double quote "" : the difference is that '' treat the characters inside as pure char, ignoring whether there are characters like $ or something like that
 (bash) $? : the exit status of the last cmd
-(bash) $# : the number of arguments be input
+(bash) $# : the number of arguments be input, NOTE THAT $0 is not included
 (bash) var=`cmd`/$(cmd) : assign the cmd output to var 
 (bash) var=`cmd`/$(cmd) WARNING : $(cmd) will be executed in a subshell , which means this cmd can't use other variables of the script
 (bash) var=$(( expression )) : $(( expression )) usually used for integer calculation; (( expression )) can also be used as condition; also one space around expression
@@ -36,3 +36,4 @@
 (cmd) mv from_file to_file/to_dir : move and rename
 (cmd) set : show all enviroment variable
 (cmd) ; : when cmds are seperated by ;, cmd will execute in sequence, and the exit status of the list of cmds is up to the last cmd
+
