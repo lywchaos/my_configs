@@ -41,16 +41,16 @@ metechar 对于 shell 来说是有特殊含义的，如果想按其本身的字�
 ### 3.2.1 Reserved Wrods
 ### 3.2.2 Simple Commands
 ### 3.2.3 Pipelines
-<p> 被 | 或 |& 分隔的一系列命令
-<p> 语法 : [time [-p]] [!] command1 [ | or |& command2 ] ...
-<p> 管道的定向优先于命令中指定的重定向
-<p> 管道中每个命令都在单独的 subshell 中执行
+<p> 被 | 或 |& 分隔的一系列命令</p>
+<p> 语法 : [time [-p]] [!] command1 [ | or |& command2 ] ...</p>
+<p> 管道的定向优先于命令中指定的重定向</p>
+<p> 管道中每个命令都在单独的 subshell 中执行</p>
 ### 3.2.4 Lists of Commands
-<p> 定义 : 一个或多个 pipeline 组成的序列,序列中的 pipelines 由 ; & && || 这样的符号分隔(在序列最后可选用 ; & 或者一个 newline 来结尾
-<p> 分隔的符号中, && || 优先级大于 ; &
-<p> 以 & 结尾的命令,在 subshell 中异步执行
-<p> 以 ; 分隔的命令,顺序执行, status取最后一个执行的命令
-<p> 以 && 和 || 分隔的命令,短路执行,status取最后一个执行的命令
+<p> 定义 : 一个或多个 pipeline 组成的序列,序列中的 pipelines 由 ; & && || 这样的符号分隔(在序列最后可选用 ; & 或者一个 newline 来结尾</p>
+<p> 分隔的符号中, && || 优先级大于 ; &</p>
+<p> 以 & 结尾的命令,在 subshell 中异步执行</p>
+<p> 以 ; 分隔的命令,顺序执行, status取最后一个执行的命令</p>
+<p> 以 && 和 || 分隔的命令,短路执行,status取最后一个执行的命令</p>
 ### 3.2.5 Compound Commands
 1. 循环
 2. 条件
@@ -118,4 +118,79 @@ metechar 对于 shell 来说是有特殊含义的，如果想按其本身的字�
 ## 3.6 Redirection
 <font style="background: yellow">跳过</font>
 ## 3.7 Executing commands
-### 3.7.1 
+### 3.7.1 Simple Command Expansion
+<p> 简单命令的执行可以分成下面几步
+1. 解析后被标注为变量赋值的 words，以及重定向，被保存下来留待后续使用
+2. 非变量赋值和重定向的，被扩展；如果扩展后还存在 words，那么第一个 word 被当成命令的名字，剩下的被当作参数
+3. 发生重定向
+4. 在‘＝’后的文本发生 tilde/parameter/arithmetic expansion，command substitution and quote removal
+<p> <font style="background: yellow">说实话没看懂</font>
+### 3.7.2 Command Search and Expansion
+<p> 如果在分词以后，得到简单命令和参数列表，那么如下过程发生
+1. 如果命令名不包含 slash，那么 shell 开始定位这个命令；如果存在同名函数，则调用函数
+2. 否则，在 shell builtins 里面进行查找，直到匹配
+3. 否则，在另外的路径中查找
+<p> <font color=" red">后面还有，跳过了</font>
+### 3.7.3 Command Execution Environment
+<p> <font style="background: yellow">skip</font>
+### 3.7.4 Environment
+<p> <font style="background: yellow">skip</font>
+### 3.7.5 Exit Status
+<p> <font style="background: yellow">skip</font>
+### 3.7.6 Signals
+<p> <font style="background: yellow">skip</font>
+## 3.8 Shell Scripts
+<p> <font style="background: yellow">skip</font>
+# 4 Shell Builtin Commands
+## 4.1 Bourne Shell Builtins
+<p>一堆内置命令</p>
+## 4.2 Bash Builtin Commands
+<p>又一堆内置命令</p>
+## 4.3 Modifying Shell Behavior
+### 4.3.1 The Set Builtin
+<p>全篇在讲set命令</p>
+### 4.3.2 The Shopt Builtin
+<p>全篇在讲 shopt 命令</p>
+## 4.4 Special Builtins
+<p>大致扫了一眼，感觉不实用</p>
+# 5 Shell Variables
+## 5.1 Bourne Shell Variables
+<p>一系列预定义的变量</p>
+## 5.2 Bash Variables
+<p>一系列预定义的变量</p>
+# 6 Bash Features
+## 6.1 Invoking Bash
+<p>介绍了 bash 命令的和参数</p>
+## 6.2 Bash Startup Files
+<p>但是我是 zsh，是不是就不用看这个了</p>
+## 6.3 Interactive Shells
+<p><font style="background: yellow">感觉没啥用，跳过</font></p>
+## 6.4 Bash Conditional Expressions
+<p>感觉跟以前的内容重复了</p>
+## 6.5 Shell Arithmetic
+<p>感觉同上</p>
+## 6.6 Aliases
+<p>感觉不用看</p>
+## 6.7 Arrays
+<p>创建数组的方法，我感觉实用的是直接给数组下标赋值，或者用括号来直接创建</p>
+<p>在用括号创建的时候，每个值都要进行所有的 shell expansion</p>
+<p>还说了下 associated array 的用法，但是我没看</p>
+<p>取数组元素：${name[subscript]}</p>
+<p>当 subscript 是 ＊ 或者 ＠ 的时候，上面那坨会 expand 为整个数组中所有的元素</p>
+<p>虽然但是，expand 的时候还要受到 quoting 的限制</p>
+<p>${#name[subscript]} 则 expand 成这个数组的长度</p>
+## 6.8 The Directory Stack
+<p>可以通过 pushd 和 popd 这两个方法来学这一节</p>
+### 6.8.1 Directory Stack Builtins
+<p>dirs pushd popd 三个命令的手册</p>
+## 6.9 Controlling the Prompt
+<p><font style="background: yellow">跳过</font></p>
+## 6.10 The Restricted Shell
+<p><font style="background: yellow">跳过</font></p>
+## 6.11 Bash POSIX Mode
+<p><font style="background: yellow">跳过</font></p>
+## 6.12 Shell Compatibility Mode
+<p><font style="background: yellow">跳过</font></p>
+# 7 Job Control
+<p><font style="background: yellow">跳过</font></p>
+# 8 Command Line Editing
