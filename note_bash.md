@@ -347,5 +347,7 @@
 
 <p><font style="background: yellow">一些历史命令相关,跳过</font></p>
 
-flowchart TB
-    a
+``` mermaid
+graph LR
+A --> B
+```
