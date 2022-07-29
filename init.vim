@@ -21,6 +21,6 @@ call plug#end()
 " html字体文字颜色
 :iab htmlpwyq <font color=""></font><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 " html段落
-:iab ppp <p>
+:iab ppp <p></p><Left><Left><Left><Left>
 
 inoremap kj <Esc>
