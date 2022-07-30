@@ -1,4 +1,5 @@
 (bash) $0 : the name of script; NOTE THAT the content of $0 depends on the file_name in cmd that you run the script
+(bash) how to break a line in bash : add \ after a line, or add tow space after a line ( useful when markdown )
 (bash) array : ${array[0]} to get the first element in array
 (bash) assignment expression : no spaces arount = 
 (bash) break/continue number : number default as 1, act like usual; but 2 3 are different

@@ -6,6 +6,7 @@ set showcmd
 set nohlsearch
 set autoindent
 set softtabstop=4
+set tabstop=4
 set rtp +=~/.vim
 
 syntax on
@@ -22,5 +23,7 @@ call plug#end()
 :iab htmlpwyq <font color=""></font><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 " html段落
 :iab ppp <p></p><Left><Left><Left><Left>
+" html删除线
+:iab htmldel <del></del><Left><Left><Left><Left><Left><Left>
 
 inoremap kj <Esc>

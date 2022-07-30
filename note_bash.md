@@ -1,4 +1,4 @@
-*参考书是 bash reference manual*
+# Book : Bash Reference Manual
 # 二、一些定义
 **挑了几个我觉得比较重要的记一下**
 - filed ： 是 shell expansions 的结果， 该结果定义为一个文本单元。通常在 expansion 之后，命令执行时，这样的 field 被用作是命令的名字（ls/mv/rm等）或者命令的参数
@@ -347,7 +347,237 @@
 
 <p><font style="background: yellow">一些历史命令相关,跳过</font></p>
 
-``` mermaid
-graph LR
-A --> B
+# Book : Linux命令行与脚本编程大全
+## 11.1 使用多个命令
+## 11.2 创建 shell 脚本文件
+
+<p>#!/bin/bash 告诉系统使用 /bin/bash 来运行当前脚本</p>
+
+## 11.3 显示消息
+
+<p>显示消息时需要注意，默认是不需要用引号的，但是当 echo 后面的参数中有引号时该怎么办呢</p>
+
+1. 用另外的引号来进行转义，比如
 ```
+input : echo 'Rich says "scripting is easy".'
+output : Rich says "scripting is easy".
+```
+2. 用 \ 来做 quoting，实现转义，比如
+```
+input : echo testtest\'test
+output : testtesttest
+```
+## 11.4 使用变量
+### 11.4.1 环境变量
+set 命令可以打印出完整的当前环境变量列表。 \
+这些变量都可以在脚本中进行引用
+### 11.4.2 用户变量
+也就是在脚本中自定义的变量\
+需要注意的是在自定义变量的赋值中，等号两边<font color=" red">不能有空格</font>
+```
+var1=10 正确
+var1 = 10 错误
+```
+shell 脚本会自动决定变量值的数据类型（我的理解就是说 shell 是没有类型系统的，完全依赖上下文来保证语义）  
+### 11.4.3 命令替换
+可以把 shell 命令的输出赋值给变量  
+```
+two ways to do this  : `` or $()
+
+testting='date'
+testting=$(date)
+echo $test
+
+output is the same : Sat Jul 30 14:57:59 +08 2022  
+
+一个常见的用法：输出日志文件  
+today=$(date +%y%m%d)
+ls /usr/bin -al > log.$today
+```
+需要注意的是，命令替换导致该命令在 subshell 中运行，因此无法使用当前脚本中的自定义变量  
+在命令行提示符下使用路径./来运行命令也会创建 subshell，如果不加入路径就不会有 subshell  
+## 11.5 重定向输入和输出
+### 11.5.1 输出重定向
+### 11.5.2 输入重定向
+总感觉输入重定向是不是没什么用，管道的下位
+## 11.6 管道
+```
+经典用法：将大量输出管道给 less 或者 more 这样的命令来查看  
+ls -al | more
+```
+## 11.7 执行数学运算
+### 11.7.1 expr命令
+skip
+### 11.7.2 $[ calculation ]
+需要注意的是，bash shell 只支持整数运算  
+zsh 支持浮点运算
+### 11.7.3 浮点运算解决方案
+skip  
+## 11.8 退出脚本
+重要概念是：exit status  
+### 11.8.1 查看退出状态码
+$? 保存着上个已经执行的命令的退出状态码  
+### 11.8.2 exit 命令
+## 11.9 小结
+# 12 使用结构化命令
+## 12.1 使用 if-then 语句
+最基本的结构化命令:
+```
+if command
+then
+    commands
+fi
+```
+跟其它语言不同,bash 采用 command 的 exit status 来进行条件判断  
+exit status 为0时则为 true, 否则为 false  
+实际上,这个 command 一般情况下是调用了 bash 内置的 test 方法来做的, test 方法可以通过不同的条件来使用不同的 exit status 进行返回  
+不信可以 man test 试一下  
+## 12.2 if-then-else 语句
+## 12.3 嵌套 if
+## 12.4 test 命令
+通过 man test 可以看到, test 是有好几种语法的,比如  
+```
+if [ condition ]
+then
+    commands
+fi
+```
+这个 [ condition ] 其实就是调用了 test 命令  
+### 12.4.1 数值比较
+注意,使用的是像参数一样的方法,而不是运算符,来实现比较  
+### 12.4.2 字符串比较
+注意,这里跟数值的情况不同了,使用的是运算符来实现比较
+### 12.4.3 文件比较
+可以检查文件是否存在,是否是文件,是否是目录,是否可写/可执行等等功能  
+## 12.5 复合条件测试
+布尔运算: && ||  
+## 12.6 if-then 的高级特性
+### 12.6.1 使用双括号
+<font color=" red">(( expression ))</font> 允许我们进行更高级的 <font color=" red">数学比较</font>  
+可以用双括号来进行比较,也可以在双括号里面进行赋值  
+双括号中的大于号不需要转义  
+感觉只要记住双括号是用来进行方便的数学比较的就好了  
+### 12.6.2 使用双方括号
+<font color=" red">[[ expression ]]</font> 允许我们进行更高级的 <font color=" red">字符串比较</font>  
+其比较的方法跟 test 命令是一样的,但是额外 <font color=" red">支持正则模式匹配</font>  
+<font style="background: yellow">需要注意的是,有正则方法的匹配,还有一种是 glob 模式的匹配(比如把 * 当作任意的任意多个字符,而在正则中, * 表示的是前一个字符的任意多个)</font>  
+## 12.7 case 命令
+## 12.8 小结
+# 12 更多的结构化命令
+## 13.1 for 命令
+基本形式  
+```
+for var in list
+do
+    commands
+done
+```
+### 13.1.1 读取列表中的值
+```
+虽然看起来很怪,但是可以这么写的  
+for test in Alabama Alaksk Arizona
+do
+    echo The next state is $test
+done
+输出如下:
+The next state is Alabama
+The next state is Alaksk
+The next state is Arizona
+```
+### 13.1.2 读取列表中的复杂值
+下面的代码的输出就跟我们的预想有点差别了  
+```
+for test in I don't know if this'll work
+do
+    echo "word:$test"
+done
+
+word:I
+word:dont know if thisll
+word:work
+```
+单引号的问题  
+通过转义来解决  
+```
+for test in I don\'t know if "this'll" work
+do
+    echo "word:$test"
+done
+```
+注意,上面用了两种转义方法: \ 和 " "  
+for 循环假定是用空格来分割每个值的(其实严谨来说是通过 IFS,只不过默认的 IFS 正好包括空格)  
+```
+所以:  
+for test in New York
+do
+    echo $test
+done
+输出两行,一行 New 一行 York
+而
+for test in "New York"
+do
+    echo $test
+done
+则输出一行完整的 New York
+```
+### 13.1.3 从变量读取列表
+```
+list="A B C D"
+list=$list" E" // 拼接字符串
+for i in $list // 注意带$
+do
+    echo $i
+done
+```
+### 13.1.4 从命令读取值
+```
+其实就是用命令替换来把列表存到变量里,方便迭代处理  
+假如当前目录有个文件叫 classmates  
+for clsmt in $(cat classmates)
+do
+    echo $clsmt
+done
+```
+### 13.1.5 更改字段分隔符 IFS
+默认 IFS 是这三个:空格/制表符/换行符  
+比如我们上面小节的 classmates 文件里面的学生可能一行是一条数据,一条数据是用空格隔开的很多字段,那么如果不更改 IFS 的话,就导致每个 for 都输出一个字段,而不是一个学生  
+而如果我们在脚本最开始写上 IFS=$'\n' 的话,再去 for 循环,输出的就是一次一行了
+```
+显而易见的,我们应该只在需要的时候更改 IFS ,用完马上恢复默认值,这是有固定写法的  
+IFS.OLD=$IFS
+IFS=$'\n' // 这里竟然也要用$
+<some code using IFS>
+IFS=$IFS.OLD
+```
+### 13.1.6 用通配符读取目录
+可以 for i in $path, 然后在 path 里面用通配符,这样就会强制使用 file expansion, 就可以批量处理文件了  
+
+<font color=" red">需要注意, 在处理上面一段我写的 i 的时候,一般要 "$i" 这样处理,因为有可能会出现空格嘛</font>  
+
+## 13.2 C语言风格的 for 命令
+### 13.2.1 C语言的 for 命令
+```
+bash 中的C风格 for 是这么写的
+for (( a = 1; a < 10; a++ ))
+看起来很怪,因为赋值的等号两边竟然有空格,使用变量也不用$,迭代的计算也不用括号或者expr  
+反正小心使用  
+```
+### 13.2.2 使用多个变量
+## 13.3 while 命令
+### 13.3.1 while 的基本格式
+```
+while test command
+do
+    commands
+done
+```
+最常见的 test command 就是方括号  
+### 13.3.2 使用多个测试命令
+很怪,只有 <font color=" red">最后一个测试命令来决定什么时候退出循环</font>  
+很怪,测试命令之间没有逻辑运算符连接,只有不同的测试命令写在不同的行
+```
+while echo $var1
+        [ $var1 -ge 0 ]
+```
+## 13.4 until 命令
+
