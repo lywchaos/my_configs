@@ -105,3 +105,20 @@ xmodmap -e "clear lock"
 xmodmap -e "clear control"
 xmodmap -e "keycode 66 = Control_L"
 xmodmap -e "add control = Control_L Control_R"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/lyw/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/lyw/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/lyw/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/lyw/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+bindkey "^ " forward-word
