@@ -1,1 +1,22 @@
+ctrl ]    跳到光标所在位置的超链接处  01
+ctrl o    jump back  01
+J    join, 把光标放在第1行首,然后按J,结果是下一行自动接在光标行后,且自动加空格  02
+u    undo, 撤销上个操作  02
+ctrl r    撤销上个u  02
+count    count后跟命令, 意思是重复命令count次, 但是注意,比如3at这样的命令,如果意图是插入3个t的话,后面要立马接esc才能完成命令,不然就只是直接进入插入模式了  02
+help    非常全面的help写法  02
+count $    移动到第count行的末尾, 注意, count ^ 并不会移动到第count行的行首 03
+f char    行内查找char,另外,";"是重复查找,","是重复反向查找 03
+%    括号匹配,若当前光标处是括号,则移动到匹配的括号处;否则,在行内向右寻找括号并移动到括号处;如果行内没有括号,就没有作用  03
+count G    光标移动到count行  03
+count %    光标移动到文档的第百分之count处  03
+H M L    光标移动到当前页顶/中/底  03
+:set number/nonumber    显示/关闭行号  03
+:set ruler    在右下角显示光标位置  03
+ctrl D/U    向下/上scroll半页  03
+ctrl F/B    向下/上scroll一页  03
+zz zt zb    将当前行scroll到页中/顶/底  03
+
+看到3.8
+
 !move+cmd :(do't enter +, just for nicelook) the range of move is used as the input of the cmd and the output of this cmd take place of original range
