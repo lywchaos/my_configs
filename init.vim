@@ -27,3 +27,4 @@ call plug#end()
 :iab htmldel <del></del><Left><Left><Left><Left><Left><Left>
 
 inoremap kj <Esc>
+vnoremap kj <Esc>

@@ -1,32 +1,44 @@
-count    count后跟命令, 意思是重复命令count次, 但是注意,比如3at这样的命令,如果意图是插入3个t的话,后面要立马接esc才能完成命令,不然就只是直接进入插入模式了  02
-count G    光标移动到count行  03
-count %    光标移动到文档的第百分之count处  03
-count $    移动到第count行的末尾, 注意, count ^ 并不会移动到第count行的行首 03
-ctrl D/U    向下/上scroll半页  03
-ctrl F/B    向下/上scroll一页  03
-ctrl o    jump back  01
-ctrl r    撤销上个u  02
-ctrl ]    跳到光标所在位置的超链接处  01
-f char    行内查找char,另外,";"是重复查找,","是重复反向查找 03
-help    非常全面的help写法  02
-H M L    光标移动到当前页顶/中/底  03
-J    join, 把光标放在第1行首,然后按J,结果是下一行自动接在光标行后,且自动加空格  02
-:jumps    列出jump历史  03
-`mark    jump到上个mark处, ``会在上个mark和当前位置之间来回跳, 原因是`命令本身也是jump的意思(需要注意的是jump的定义:使用命令移动到非当前行的动作就是一个jump; 而jk这样的不算jump, 就算你前面加了count看起来很像使用命令去移动的也不算); 可以使用ma来将光标处设为mark a,这样就可以`a来jump到这个位置,总共可以设置a-z26个mark; :marks列出所有mark  03
-! move cmd    move范围内的文本被当作后续cmd命令的输入, 结果输出到原地
-/pattern    搜索pattern, n是向右重复搜索, N是向前; 可以用上下键来使用历史搜索的pattern  03
-/^pattern    只搜索在行首的pattern  03
-/pattern$    只搜索在行尾的pattern  03
-:scriptnames    显示许多.vim文件路径, 比如 init.vim  03
-:set ignorecase/noignorecase    搜索时是否忽略大小写  03
-:set (no)hlsearch    搜索时是否显示高光  03
-:set (no)incsearch    在输入搜索pattern时,是否实时显示匹配结果,建议打开    03
-:set number/nonumber    显示/关闭行号  03
-:set ruler    在右下角显示光标位置  03
-/\<the\>    全词匹配搜索the, \用来转义, \<表示以the开始, \>表示以the结束  03
-u    undo, 撤销上个操作  02
-zz zt zb    将当前行scroll到页中/顶/底  03
-%    括号匹配,若当前光标处是括号,则移动到匹配的括号处;否则,在行内向右寻找括号并移动到括号处;如果行内没有括号,就没有作用  03
-/\.    搜索点号. 转义是因为pattern是按照正则来搜索的,而正则的点号是匹配任意一个字符  03
-#/*    向上/下搜索光标指向的单词(全词匹配), g#/g* 可以用来部分匹配  03
+n count    count后跟命令, 意思是重复命令count次, 但是注意,比如3at这样的命令,如果意图是插入3个t的话,后面要立马接esc才能完成命令,不然就只是直接进入插入模式了  02
+n count G    光标移动到count行  03
+n count %    光标移动到文档的第百分之count处  03
+n count $    移动到第count行的末尾, 注意, count ^ 并不会移动到第count行的行首 03
+n ctrl D/U    向下/上scroll半页  03
+n ctrl F/B    向下/上scroll一页  03
+n ctrl o    jump back  01
+n ctrl r    撤销上个u  02
+n ctrl ]    跳到光标所在位置的超链接处  01
+n f char    行内查找char,另外,";"是重复查找,","是重复反向查找 03
+n help    非常全面的help写法  02
+n H M L    光标移动到当前页顶/中/底  03
+n J    join, 把光标放在第1行首,然后按J,结果是下一行自动接在光标行后,且自动加空格  02
+n :jumps    列出jump历史  03
+n `mark    jump到上个mark处, ``会在上个mark和当前位置之间来回跳, 原因是`命令本身也是jump的意思(需要注意的是jump的定义:使用命令移动到非当前行的动作就是一个jump; 而jk这样的不算jump, 就算你前面加了count看起来很像使用命令去移动的也不算); 可以使用ma来将光标处设为mark a,这样就可以`a来jump到这个位置,总共可以设置a-z26个mark; :marks列出所有mark  03
+n ! move cmd    move范围内的文本被当作后续cmd命令的输入, 结果输出到原地
+n /pattern    搜索pattern, n是向右重复搜索, N是向前; 可以用上下键来使用历史搜索的pattern  03
+n /^pattern    只搜索在行首的pattern  03
+n /pattern$    只搜索在行尾的pattern  03
+n :scriptnames    显示许多.vim文件路径, 比如 init.vim  03
+n :set ignorecase/noignorecase    搜索时是否忽略大小写  03
+n :set (no)hlsearch    搜索时是否显示高光  03
+n :set (no)incsearch    在输入搜索pattern时,是否实时显示匹配结果,建议打开    03
+n :set number/nonumber    显示/关闭行号  03
+n :set ruler    在右下角显示光标位置  03
+n /\<the\>    全词匹配搜索the, \用来转义, \<表示以the开始, \>表示以the结束  03
+n u    undo, 撤销上个操作  02
+n zz zt zb    将当前行scroll到页中/顶/底  03
+n %    括号匹配,若当前光标处是括号,则移动到匹配的括号处;否则,在行内向右寻找括号并移动到括号处;如果行内没有括号,就没有作用  03
+n /\.    搜索点号. 转义是因为pattern是按照正则来搜索的,而正则的点号是匹配任意一个字符  03
+n #/*    向上/下搜索光标指向的单词(全词匹配), g#/g* 可以用来部分匹配  03
+n operator    d, c这样的都叫operator,典型的vim操作是 operator move,比如dw, d4w这样的  04
+n cc    修改当前行,且保留缩进  04
+n x/X    删除光标所在位置/左边字符  04
+n D C    delete/change到行尾  04
+n .    重复刚才的change, 但不重复u/ctrl R/:command  04
+n o/O    在v进行选择时,把光标移动到最边上/同行最边上  04
+n p/P    put到光标后/前  04
+n y/Y    copy,为什么不叫c,因为c已经是change了/复制到行尾  04
+n "*y/"*p    将vim中内容复制到系统clipboard/将系统clipboard粘贴到vim  04
+n text object    aw iw as is a( i(这样的就叫text object  04
+n ~    切换光标所在位置的大小写,并光标右移一个char  04
+
 该看04了
