@@ -8,6 +8,7 @@ set autoindent
 set softtabstop=4
 set tabstop=4
 set rtp +=~/.vim
+set mouse=a
 
 syntax on
 filetype plugin indent on
