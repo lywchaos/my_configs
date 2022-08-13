@@ -1,3 +1,13 @@
+concept> Ex命令    用冒号打头的那些命令
+concept> global plugins    一些插件形式实现的,非常常用的功能,而非vim实现的,感觉就像标准库之于编程语言  05
+concept> motion    用来移动的指令,比如 h, j, $
+concept> operator    感觉像f, d, x, 这样的不用冒号的好像都是operator;    经典操作是operator [motion, text object], 比如daw, dG;
+concept> range    单独一行也是一个range;    用于替换命令,指定在range中进行搜索替换操作;range也可以使用pattern,比如:?^Chapter?,/^Chapter/s=grey=gray=g的意思是把当前章中所有的grey改成gray,这里的?pattern?意思是向上查找,/pattern/用来向下查找, 所以这个range的意思是,从当前位置之前的第一个以Chapter为行首的行,到当前位置之后的第一个以Chapter为行首的行;    另外,range是可以加减的,比如 .+5,$-10 也是合法的range;    另外,range可以用选择来指定,其实也是用了mark,因为<这个mark指选择的最左位置,所以比如 '>,$ 的range指从选择的最右边位置到最后一行;    range可以用mark来指定,e.g. 't,'b 是合法的range, 注意mark是用单引号来pre,而不是`;  10
+concept> text object    aw,  iw这样的
+concept> $VIMRUNTIME    vim runtime路径  05
+normal mode> :args d f e    在打开多个文件的情况下,关闭当前多个文件并打开另外多个文件进行编辑  07
+normal mode> cc    修改当前行,且保留缩进  04
+normal mode> :close    关闭当前窗口  08
 normal mode> count    count后跟命令, 意思是重复命令count次, 但是注意,比如3at这样的命令,如果意图是插入3个t的话,后面要立马接esc才能完成命令,不然就只是直接进入插入模式了  02
 normal mode> count G    光标移动到count行  03
 normal mode> count %    光标移动到文档的第百分之count处  03
@@ -6,84 +16,74 @@ normal mode> ctrl D/U    向下/上scroll半页  03
 normal mode> ctrl F/B    向下/上scroll一页  03
 normal mode> ctrl o    jump back  01
 normal mode> ctrl r    撤销上个u  02
+normal mode> ctrl v jjww"by    复制一个块到寄存器b  07
+normal mode> ctrl w [h,j,k,l,w]    打开多个窗口时,将光标移动到左/下/上/右个窗口/切换到上个窗口  08
+normal mode> ctrl w [H,J,K,L]    将当前窗口移动到最左/下/上/右  08
+normal mode> ctrl ^    在同时打开多个文件的情况下,在当前文件和前一个文件间跳转  07
+normal mode> ctrl +/-    增大/减小当前窗口  08
 normal mode> ctrl ]    跳到光标所在位置的超链接处  01
+normal mode> D C    delete/change到行尾  04
+normal mode> :edit file    关闭当前文件并打开file进行编辑(注意保存原文件,不过也没关系,你不保存就会有警告的)  07
 normal mode> f char    行内查找char,另外,";"是重复查找,","是重复反向查找 03
+normal mode> :file another_file    感觉跟saveas好像没区别啊  07
+normal mode> :filetype on    使vim能识别文件类型(语法高亮等功能依赖这个设置)  05
+normal mode> :filetype plugin on    使用文件类型特定的plugin, 实现也很简单, 只要放在对应的路径下就好了, 因为每种文件类型都有自己的插件路径(比如/usr/share/nvim/runtime/tfplugin/vim.vim)(注意,有时候同个filetype可能有多个插件,可以通过命名来使其不冲突,如下命名方式是有效的(ftplugin/<filetype>.vim)(ftplugin/<filetype>_<name>.vim)(ftplugin/<filetype>/<name>.vim))  05
+normal mode> "f[y,d]as    复制/删除一个sentence并且把内容放在寄存器f中;要粘贴的话就用"fp  07
+normal mode> gq    格式化;    格式化的标准就是自己的配置文件里面的设置;  10
+normal mode> gt    goto tab  08
+normal mode> g[u,U,~]    将文本变成小写/大写/切换大小写;  double就可以应用到整行, 比如guu gUU g~~;  10
 normal mode> help    非常全面的help写法  02
 normal mode> H M L    光标移动到当前页顶/中/底  03
 normal mode> J    join, 把光标放在第1行首,然后按J,结果是下一行自动接在光标行后,且自动加空格  02
 normal mode> :jumps    列出jump历史  03
+normal mode> :map <F5> i{<Esc>ea}<Esc>    将F5键映射成一个功能:用{}包住当前光标到word尾  05
+normal mode> :map    列出所有map,注意不加s  05
 normal mode> `mark    jump到上个mark处, ``会在上个mark和当前位置之间来回跳, 原因是`命令本身也是jump的意思(需要注意的是jump的定义:使用命令移动到非当前行的动作就是一个jump; 而jk这样的不算jump, 就算你前面加了count看起来很像使用命令去移动的也不算); 可以使用ma来将光标处设为mark a,这样就可以`a来jump到这个位置,总共可以设置a-z26个mark; :marks列出所有mark; 但是小写的mark是local to file的,而大写的mark可以用在list of files中  03
+normal mode> !{motion}{program}    将motion这个range的文本使用program来filter;    motion可以用!来表示当前行,比如!!date可以在当前文件中加时间戳;    :read !ls比较tricky, 意思是把ls的输出put到光标后;其实直接!jls也是类似的效果,但是这样就必须输入motion;    :write !wc输出该文件的单词计数,但是:read !wc写的全是0,感觉还是没搞懂;  10
 normal mode> ! move cmd    move范围内的文本被当作后续cmd命令的输入, 结果输出到原地
-normal mode> /pattern    搜索pattern, n是向右重复搜索, N是向前; 可以用上下键来使用历史搜索的pattern  03
-normal mode> /^pattern    只搜索在行首的pattern  03
+normal mode> nvim -d a b    diff模式看两个文件的区别  08
+normal mode> nvim (-o/O) a b c    同时打开三个文件(水平分割打开/垂直分割打开);:next移动到下个文件,:previous移动到上个文件,移动前原文件要保存否则会报错,:wnext=保存后移动到下一个文件,嫌麻烦可以:set autowrite;:args显示所有文件和当前位置  07
+normal mode> :only    关闭所有其它窗口, 只保留当前窗口  08
+normal mode> o/O    在v进行选择时,把光标移动到最边上/同行最边上  04
+normal mode> operator    d, c这样的都叫operator,典型的vim操作是 operator move,比如dw, d4w这样的  04
+normal mode> :options    列出所有option以及它们的值  05
+normal mode> :packadd vimball    引入vimball包/插件. 该命令执行后, :help vimball也work了,原因是同时将包的路径加入了runtimepath. 传统加插件的方式如下几步:1.创建正确的目录 2.将得到的包解压到正确的目录 3.在vimrc文件中加入该插件  05
 normal mode> /pattern$    只搜索在行尾的pattern  03
+normal mode> /^pattern    只搜索在行首的pattern  03
+normal mode> /pattern    搜索pattern, n是向右重复搜索, N是向前; 可以用上下键来使用历史搜索的pattern  03
+normal mode> p/P    put到光标后/前  04
+normal mode> qa    宏录制到寄存器a, 注意,寄存器是通用的, 比如你可以把录制的宏用"ap给粘贴出来,改好以后再"ay给复制回去,然后用@a来播放; 再次按q就结束录制;@q可以看成一个命令,前面可以加count,用来播放宏  10
+normal mode> qA    录制宏并append到寄存器a中;这里大写的意思就是append; 所有使用寄存器的地方,都可以用大写形式来表示append  10
+normal mode> :[q/w]all    关闭/保存所有窗口  08
+normal mode> :[range]g/pattern/cmd    global命令,可以搜索一个pattern并且在目标行执行命令;这里的命令必须是Ex命令,也就是用冒号开头的那些;    默认作用于全文,而不像其它命令默认作用于当前行;    默认使用print命令;    g!指在所有非匹配行执行命令;  e.g. :g+//+s/foobar/barfoo/g意思是在所有包括//文本的行内把foobar替换为barfoo  10
+normal mode> :[range]read file    将file的内容输入到光标之后;    支持range,比如:$r file将内容输入到range之后;  10
+normal mode> :[range]write file    将range内容写入到file;    也可以>>file,就是append;  10
+normal mode> :%s/\([^,]*\), \(.*\)/\2 \1/g    这是一个比较复杂的搜索替换, 意思是把 a, b 这样的替换成 b a ,特殊用法是中括号表示任意1个括号内字符,但是前面加了^意思是不能是逗号,圆括号表示分组,后面的\1 \2就是引用了pattern里面的分组  12
+normal mode> :saveas another_file    另存为, 当前文件不变, 另存为另一个文件, 并且直接打开另一个文件进行编辑  07
 normal mode> :scriptnames    显示许多.vim文件路径, 比如 init.vim  03
 normal mode> :set ignorecase/noignorecase    搜索时是否忽略大小写  03
 normal mode> :set (no)hlsearch    搜索时是否显示高光  03
 normal mode> :set (no)incsearch    在输入搜索pattern时,是否实时显示匹配结果,建议打开    03
 normal mode> :set number/nonumber    显示/关闭行号  03
 normal mode> :set ruler    在右下角显示光标位置  03
+normal mode> :%s/from/to/flags    搜索替换;这里的%是一个range,也可以用v来选择,不用的话就是当前行;from是要被替换的pattern;to是用来替换的pattern;默认只替换一个,如果想替换所有的话就在flags的位置用g这个flag就好了,另外的flags有p,用来回显上个改变的行,c用来交互式确认是否替换;另外,如果pattern中有/记得转义,或者用+代替命令中的/也是可行的;另外关于range,常见的有 1,5 用来表示1-5行, 或者单独的数字表示单独行, .表示当前行, $表示最后一行, 所以 % 其实跟 .,$ 是一样的  10
+normal mode> :'t+1,.g/^/move 't    将mark t到当前行的所有内容reverse到mark t以上;  因为有一个EX命令叫move  12
+normal mode> :tabedit file    开新tab打开文件  08
+normal mode> :tabonly    关闭所有其它tab,只保留当前tab  08
+normal mode> :tab    可以用在任何一个打开新窗口的命令前,比如:tab split,于是新窗口会在新tab中打开  08
+normal mode> text object    aw iw as is a( i(这样的就叫text object  04
 normal mode> /\<the\>    全词匹配搜索the, \用来转义, \<表示以the开始, \>表示以the结束  03
 normal mode> u    undo, 撤销上个操作  02
+normal mode> vim -R/-M file    只读,但仍然可编辑,只是会有警告/只读,不可编辑  07
+normal mode> :(v)split file    在新窗口打开file;如果不加file的话就是打开当前文件  08
+normal mode> :write >> file    把当前选中的内容append到已经存在的file末尾,如果不选的话就是全文  07
+normal mode> x/X    删除光标所在位置/左边字符  04
+normal mode> "*y/"*p    将vim中内容复制到系统clipboard/将系统clipboard粘贴到vim  04
+normal mode> y/Y    copy,为什么不叫c,因为c已经是change了/复制到行尾  04
 normal mode> zz zt zb    将当前行scroll到页中/顶/底  03
+normal mode> ~    切换光标所在位置的大小写,并光标右移一个char  04
+normal mode> #/*    向上/下搜索光标指向的单词(全词匹配), g#/g* 可以用来部分匹配  03
 normal mode> %    括号匹配,若当前光标处是括号,则移动到匹配的括号处;否则,在行内向右寻找括号并移动到括号处;如果行内没有括号,就没有作用  03
 normal mode> /\.    搜索点号. 转义是因为pattern是按照正则来搜索的,而正则的点号是匹配任意一个字符  03
-normal mode> #/*    向上/下搜索光标指向的单词(全词匹配), g#/g* 可以用来部分匹配  03
-normal mode> operator    d, c这样的都叫operator,典型的vim操作是 operator move,比如dw, d4w这样的  04
-normal mode> cc    修改当前行,且保留缩进  04
-normal mode> x/X    删除光标所在位置/左边字符  04
-normal mode> D C    delete/change到行尾  04
-normal mode> .    重复刚才的change, 但不重复u/ctrl R/:command  04
-normal mode> o/O    在v进行选择时,把光标移动到最边上/同行最边上  04
-normal mode> p/P    put到光标后/前  04
-normal mode> y/Y    copy,为什么不叫c,因为c已经是change了/复制到行尾  04
-normal mode> "*y/"*p    将vim中内容复制到系统clipboard/将系统clipboard粘贴到vim  04
-normal mode> text object    aw iw as is a( i(这样的就叫text object  04
-normal mode> ~    切换光标所在位置的大小写,并光标右移一个char  04
-normal mode> :filetype on    使vim能识别文件类型(语法高亮等功能依赖这个设置)  05
-normal mode> :map <F5> i{<Esc>ea}<Esc>    将F5键映射成一个功能:用{}包住当前光标到word尾  05
-normal mode> :map    列出所有map,注意不加s  05
-normal mode> :packadd vimball    引入vimball包/插件. 该命令执行后, :help vimball也work了,原因是同时将包的路径加入了runtimepath. 传统加插件的方式如下几步:1.创建正确的目录 2.将得到的包解压到正确的目录 3.在vimrc文件中加入该插件  05
-global plugins    一些插件形式实现的,非常常用的功能,而非vim实现的,感觉就像标准库之于编程语言  05
-$VIMRUNTIME    vim runtime路径  05
-normal mode> :filetype plugin on    使用文件类型特定的plugin, 实现也很简单, 只要放在对应的路径下就好了, 因为每种文件类型都有自己的插件路径(比如/usr/share/nvim/runtime/tfplugin/vim.vim)(注意,有时候同个filetype可能有多个插件,可以通过命名来使其不冲突,如下命名方式是有效的(ftplugin/<filetype>.vim)(ftplugin/<filetype>_<name>.vim)(ftplugin/<filetype>/<name>.vim))  05
-normal mode> :options    列出所有option以及它们的值  05
-normal mode> "f[y,d]as    复制/删除一个sentence并且把内容放在寄存器f中;要粘贴的话就用"fp  07
-normal mode> ctrl v jjww"by    复制一个块到寄存器b  07
-normal mode> :write >> file    把当前选中的内容append到已经存在的file末尾,如果不选的话就是全文  07
-normal mode> vim -R/-M file    只读,但仍然可编辑,只是会有警告/只读,不可编辑  07
-normal mode> :saveas another_file    另存为, 当前文件不变, 另存为另一个文件, 并且直接打开另一个文件进行编辑  07
-normal mode> :file another_file    感觉跟saveas好像没区别啊  07
-normal mode> :edit file    关闭当前文件并打开file进行编辑(注意保存原文件,不过也没关系,你不保存就会有警告的)  07
-normal mode> nvim (-o/O) a b c    同时打开三个文件(水平分割打开/垂直分割打开);:next移动到下个文件,:previous移动到上个文件,移动前原文件要保存否则会报错,:wnext=保存后移动到下一个文件,嫌麻烦可以:set autowrite;:args显示所有文件和当前位置  07
-normal mode> :args d f e    在打开多个文件的情况下,关闭当前多个文件并打开另外多个文件进行编辑  07
-normal mode> ctrl ^    在同时打开多个文件的情况下,在当前文件和前一个文件间跳转  07
-normal mode> :(v)split file    在新窗口打开file;如果不加file的话就是打开当前文件  08
-normal mode> ctrl w [h,j,k,l,w]    打开多个窗口时,将光标移动到左/下/上/右个窗口/切换到上个窗口  08
-normal mode> :close    关闭当前窗口  08
-normal mode> :only    关闭所有其它窗口, 只保留当前窗口  08
-normal mode> ctrl +/-    增大/减小当前窗口  08
-normal mode> ctrl w [H,J,K,L]    将当前窗口移动到最左/下/上/右  08
-normal mode> :[q/w]all    关闭/保存所有窗口  08
-normal mode> nvim -d a b    diff模式看两个文件的区别  08
-normal mode> :tabedit file    开新tab打开文件  08
-normal mode> gt    goto tab  08
-normal mode> :tab    可以用在任何一个打开新窗口的命令前,比如:tab split,于是新窗口会在新tab中打开  08
-normal mode> :tabonly    关闭所有其它tab,只保留当前tab  08
-normal mode> qa    宏录制到寄存器a, 注意,寄存器是通用的, 比如你可以把录制的宏用"ap给粘贴出来,改好以后再"ay给复制回去,然后用@a来播放; 再次按q就结束录制;@q可以看成一个命令,前面可以加count,用来播放宏  10
-normal mode> qA    录制宏并append到寄存器a中;这里大写的意思就是append; 所有使用寄存器的地方,都可以用大写形式来表示append  10
 normal mode> @@    播放上一个宏  10
-normal mode> :%s/from/to/flags    搜索替换;这里的%是一个range,也可以用v来选择,不用的话就是当前行;from是要被替换的pattern;to是用来替换的pattern;默认只替换一个,如果想替换所有的话就在flags的位置用g这个flag就好了,另外的flags有p,用来回显上个改变的行,c用来交互式确认是否替换;另外,如果pattern中有/记得转义,或者用+代替命令中的/也是可行的;另外关于range,常见的有 1,5 用来表示1-5行, 或者单独的数字表示单独行, .表示当前行, $表示最后一行, 所以 % 其实跟 .,$ 是一样的  10
-concept> range    单独一行也是一个range;    用于替换命令,指定在range中进行搜索替换操作;range也可以使用pattern,比如:?^Chapter?,/^Chapter/s=grey=gray=g的意思是把当前章中所有的grey改成gray,这里的?pattern?意思是向上查找,/pattern/用来向下查找, 所以这个range的意思是,从当前位置之前的第一个以Chapter为行首的行,到当前位置之后的第一个以Chapter为行首的行;    另外,range是可以加减的,比如 .+5,$-10 也是合法的range;    另外,range可以用选择来指定,其实也是用了mark,因为<这个mark指选择的最左位置,所以比如 '>,$ 的range指从选择的最右边位置到最后一行;    range可以用mark来指定,e.g. 't,'b 是合法的range, 注意mark是用单引号来pre,而不是`;  10
-normal mode> :[range]g/pattern/cmd    global命令,可以搜索一个pattern并且在目标行执行命令;这里的命令必须是Ex命令,也就是用冒号开头的那些;    默认作用于全文,而不像其它命令默认作用于当前行;    默认使用print命令;    g!指在所有非匹配行执行命令;  e.g. :g+//+s/foobar/barfoo/g意思是在所有包括//文本的行内把foobar替换为barfoo  10
-normal mode> :[range]read file    将file的内容输入到光标之后;    支持range,比如:$r file将内容输入到range之后;  10
-normal mode> :[range]write file    将range内容写入到file;    也可以>>file,就是append;  10
-concept> operator    感觉像f, d, x, 这样的不用冒号的好像都是operator;    经典操作是operator [motion, text object], 比如daw, dG;
-concept> motion    用来移动的指令,比如 h, j, $
-concept> text object    aw,  iw这样的
-normal mode> gq    格式化;    格式化的标准就是自己的配置文件里面的设置;  10
-normal mode> g[u,U,~]    将文本变成小写/大写/切换大小写;  double就可以应用到整行, 比如guu gUU g~~;  10
-normal mode> !{motion}{program}    将motion这个range的文本使用program来filter;    motion可以用!来表示当前行,比如!!date可以在当前文件中加时间戳;    :read !ls比较tricky, 意思是把ls的输出put到光标后;其实直接!jls也是类似的效果,但是这样就必须输入motion;    :write !wc输出该文件的单词计数,但是:read !wc写的全是0,感觉还是没搞懂;  10
-normal mode> :%s/\([^,]*\), \(.*\)/\2 \1/g    这是一个比较复杂的搜索替换, 意思是把 a, b 这样的替换成 b a ,特殊用法是中括号表示任意1个括号内字符,但是前面加了^意思是不能是逗号,圆括号表示分组,后面的\1 \2就是引用了pattern里面的分组  12
-normal mode> :'t+1,.g/^/move 't    将mark t到当前行的所有内容reverse到mark t以上;  因为有一个EX命令叫move  12
-concept> Ex命令    用冒号打头的那些命令
+normal mode> .    重复刚才的change, 但不重复u/ctrl R/:command  04
