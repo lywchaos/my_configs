@@ -87,3 +87,27 @@ normal mode> %    括号匹配,若当前光标处是括号,则移动到匹配的
 normal mode> /\.    搜索点号. 转义是因为pattern是按照正则来搜索的,而正则的点号是匹配任意一个字符  03
 normal mode> @@    播放上一个宏  10
 normal mode> .    重复刚才的change, 但不重复u/ctrl R/:command  04
+cmd line> shift/ctrl left    在cmd line下左移一个word  20
+cmd line> ctrl b/e    等于home/end  20
+cmd line> ctrl w/u    删除光标所在位置或之前的一个word/删除整个line只剩下冒号  20
+normal mode> :!{program}    就像在shell里面执行program一样  21
+normal mode> :r !{program}    执行并把输出读进来  21
+normal mode> :w !{program}    把文本中的内容读进program的输入  21
+normal mode> :[range]!{program}    吃掉range作为输入,并用输出替换原来的range  21
+concept> shada    就是我们编辑文件时会有一堆寄存器,历史命令什么的副产物,这些东西会被保存在shada文件中,可以通过设置来保存shada文件并在以后编辑的时候load进来  21
+normal mode> :browse oldfiles    历史文件  21
+normal mode> :[w,r]shada file    将shada存到file里/从file里读取shada  21
+insert mode> ctrl w    删除前一个word  24
+insert mode> ctrl u    删除光标到该行第一个非blank  24
+insert mode> ctrl p    自动补全;是向上搜索可选的补全项的;    当光标位置之前没有char时,搜索到的是前一个单词,重复按就重复向上搜索;    而向下搜索是ctrl n;  24
+insert mode> ctrl x ctrl f/l/d/i/k/t/]/v    如果你知道要从哪里补全, 可以用这些复杂的选项  24
+insert mode> ctrl x ctrl o    源码智能补全, 比如有一个结构体s,然后你指针p指向一个s,然后输入p->再按这个组合键,就会根据结构体s的定义来进行补全;前提是进行一些设置  24
+insert mode> ctrl a    将你上次在插入模式的输入给粘贴出来;    ctrl @ 相同功能,但是自动退出插入模式;  24
+insert mode> ctrl y/e    将光标上/下方的char输入到光标位置,并向右移动光标;  24
+insert mode> ctrl r register    将寄存器内容粘贴出来;问题在于比如寄存器里面有<BS>这样的操作时,这会把<BS>这样的字符也粘贴出来;如果真的想把<BS>作为操作来重放而不是粘贴成字符的话,用ctrl r ctrl r register;  24
+normal mode> :abbreviate    列出所有缩写  24
+normal mode> :noreabbrev a b    将a作为b的缩写,但是防止递归  24
+insert mode> ctrl v    插入特殊字符(<Ecs>这样的)  24
+insert mode> ctrl k    插入特殊字符(美元符号之类的)  24
+insert mode> ctrl o command    在插入模式下执行normal模式的command  24
+该看25了
