@@ -1,17 +1,69 @@
 concept> Ex命令    用冒号打头的那些命令
 concept> global plugins    一些插件形式实现的,非常常用的功能,而非vim实现的,感觉就像标准库之于编程语言  05
 concept> motion    用来移动的指令,比如 h, j, $
+concept> operator    d, c这样的都叫operator,典型的vim操作是 operator move,比如dw, d4w这样的  04
 concept> operator    感觉像f, d, x, 这样的不用冒号的好像都是operator;    经典操作是operator [motion, text object], 比如daw, dG;
 concept> range    单独一行也是一个range;    用于替换命令,指定在range中进行搜索替换操作;range也可以使用pattern,比如:?^Chapter?,/^Chapter/s=grey=gray=g的意思是把当前章中所有的grey改成gray,这里的?pattern?意思是向上查找,/pattern/用来向下查找, 所以这个range的意思是,从当前位置之前的第一个以Chapter为行首的行,到当前位置之后的第一个以Chapter为行首的行;    另外,range是可以加减的,比如 .+5,$-10 也是合法的range;    另外,range可以用选择来指定,其实也是用了mark,因为<这个mark指选择的最左位置,所以比如 '>,$ 的range指从选择的最右边位置到最后一行;    range可以用mark来指定,e.g. 't,'b 是合法的range, 注意mark是用单引号来pre,而不是`;  10
+concept> shada    就是我们编辑文件时会有一堆寄存器,历史命令什么的副产物,这些东西会被保存在shada文件中,可以通过设置来保存shada文件并在以后编辑的时候load进来  21
+concept> text object    aw iw as is a( i(这样的就叫text object  04
 concept> text object    aw,  iw这样的
 concept> $VIMRUNTIME    vim runtime路径  05
-normal mode> :args d f e    在打开多个文件的情况下,关闭当前多个文件并打开另外多个文件进行编辑  07
+Ex command> :abbreviate    列出所有缩写  24
+Ex command> :argdo %s/\<x_cnt\>/x_counter/ge | update    对打开的所有文件执行替换操作; e用来supress error message;    |用来分割两个命令;    update指当文件change的时候才写入;  26
+Ex command> :args d f e    在打开多个文件的情况下,关闭当前多个文件并打开另外多个文件进行编辑  07
+Ex command> :browse oldfiles    历史文件  21
+Ex command> :close    关闭当前窗口  08
+Ex command> ctrl b/e    等于home/end  20
+Ex command> ctrl w/u    删除光标所在位置或之前的一个word/删除整个line只剩下冒号  20
+Ex command> :edit file    关闭当前文件并打开file进行编辑(注意保存原文件,不过也没关系,你不保存就会有警告的)  07
+Ex command> :file another_file    感觉跟saveas好像没区别啊  07
+Ex command> :filetype on    使vim能识别文件类型(语法高亮等功能依赖这个设置)  05
+Ex command> :filetype plugin on    使用文件类型特定的plugin, 实现也很简单, 只要放在对应的路径下就好了, 因为每种文件类型都有自己的插件路径(比如/usr/share/nvim/runtime/tfplugin/vim.vim)(注意,有时候同个filetype可能有多个插件,可以通过命名来使其不冲突,如下命名方式是有效的(ftplugin/<filetype>.vim)(ftplugin/<filetype>_<name>.vim)(ftplugin/<filetype>/<name>.vim))  05
+Ex command> :help    非常全面的help写法  02
+Ex command> :jumps    列出jump历史  03
+Ex command> :map <F5> i{<Esc>ea}<Esc>    将F5键映射成一个功能:用{}包住当前光标到word尾  05
+Ex command> :map    列出所有map,注意不加s  05
+Ex command> :noreabbrev a b    将a作为b的缩写,但是防止递归  24
+Ex command> :only    关闭所有其它窗口, 只保留当前窗口  08
+Ex command> :options    列出所有option以及它们的值  05
+Ex command> :packadd vimball    引入vimball包/插件. 该命令执行后, :help vimball也work了,原因是同时将包的路径加入了runtimepath. 传统加插件的方式如下几步:1.创建正确的目录 2.将得到的包解压到正确的目录 3.在vimrc文件中加入该插件  05
+Ex command> :!{program}    就像在shell里面执行program一样  21
+Ex command> :[q/w]all    关闭/保存所有窗口  08
+Ex command> :[range]g/pattern/cmd    global命令,可以搜索一个pattern并且在目标行执行命令;这里的命令必须是Ex命令,也就是用冒号开头的那些;    默认作用于全文,而不像其它命令默认作用于当前行;    默认使用print命令;    g!指在所有非匹配行执行命令;  e.g. :g+//+s/foobar/barfoo/g意思是在所有包括//文本的行内把foobar替换为barfoo  10
+Ex command> :[range]!{program}    吃掉range作为输入,并用输出替换原来的range  21
+Ex command> :[range]read file    将file的内容输入到光标之后;    支持range,比如:$r file将内容输入到range之后;  10
+Ex command> :[range]write file    将range内容写入到file;    也可以>>file,就是append;  10
+Ex command> :r !{program}    执行并把输出读进来  21
+Ex command> :%s/\([^,]*\), \(.*\)/\2 \1/g    这是一个比较复杂的搜索替换, 意思是把 a, b 这样的替换成 b a ,特殊用法是中括号表示任意1个括号内字符,但是前面加了^意思是不能是逗号,圆括号表示分组,后面的\1 \2就是引用了pattern里面的分组  12
+Ex command> :saveas another_file    另存为, 当前文件不变, 另存为另一个文件, 并且直接打开另一个文件进行编辑  07
+Ex command> :scriptnames    显示许多.vim文件路径, 比如 init.vim  03
+Ex command> :%s/from/to/flags    搜索替换;这里的%是一个range,也可以用v来选择,不用的话就是当前行;from是要被替换的pattern;to是用来替换的pattern;默认只替换一个,如果想替换所有的话就在flags的位置用g这个flag就好了,另外的flags有p,用来回显上个改变的行,c用来交互式确认是否替换;另外,如果pattern中有/记得转义,或者用+代替命令中的/也是可行的;另外关于range,常见的有 1,5 用来表示1-5行, 或者单独的数字表示单独行, .表示当前行, $表示最后一行, 所以 % 其实跟 .,$ 是一样的  10
+Ex command> shift/ctrl left    在cmd line下左移一个word  20
+Ex command> :'t+1,.g/^/move 't    将mark t到当前行的所有内容reverse到mark t以上;  因为有一个EX命令叫move  12
+Ex command> :tabedit file    开新tab打开文件  08
+Ex command> :tabonly    关闭所有其它tab,只保留当前tab  08
+Ex command> :tab    可以用在任何一个打开新窗口的命令前,比如:tab split,于是新窗口会在新tab中打开  08
+Ex command> :(v)split file    在新窗口打开file;如果不加file的话就是打开当前文件  08
+Ex command> :w !{program}    把文本中的内容读进program的输入  21
+Ex command> :write >> file    把当前选中的内容append到已经存在的file末尾,如果不选的话就是全文  07
+Ex command> :[w,r]shada file    将shada存到file里/从file里读取shada  21
+insert mode> ctrl a    将你上次在插入模式的输入给粘贴出来;    ctrl @ 相同功能,但是自动退出插入模式;  24
+insert mode> ctrl k    插入特殊字符(美元符号之类的)  24
+insert mode> ctrl o command    在插入模式下执行normal模式的command  24
+insert mode> ctrl p    自动补全;是向上搜索可选的补全项的;    当光标位置之前没有char时,搜索到的是前一个单词,重复按就重复向上搜索;    而向下搜索是ctrl n;  24
+insert mode> ctrl r register    将寄存器内容粘贴出来;问题在于比如寄存器里面有<BS>这样的操作时,这会把<BS>这样的字符也粘贴出来;如果真的想把<BS>作为操作来重放而不是粘贴成字符的话,用ctrl r ctrl r register;  24
+insert mode> ctrl u    删除光标到该行第一个非blank  24
+insert mode> ctrl v    插入特殊字符(<Ecs>这样的)  24
+insert mode> ctrl w    删除前一个word  24
+insert mode> ctrl x ctrl f/l/d/i/k/t/]/v    如果你知道要从哪里补全, 可以用这些复杂的选项  24
+insert mode> ctrl x ctrl o    源码智能补全, 比如有一个结构体s,然后你指针p指向一个s,然后输入p->再按这个组合键,就会根据结构体s的定义来进行补全;前提是进行一些设置  24
+insert mode> ctrl y/e    将光标上/下方的char输入到光标位置,并向右移动光标;  24
 normal mode> cc    修改当前行,且保留缩进  04
-normal mode> :close    关闭当前窗口  08
 normal mode> count    count后跟命令, 意思是重复命令count次, 但是注意,比如3at这样的命令,如果意图是插入3个t的话,后面要立马接esc才能完成命令,不然就只是直接进入插入模式了  02
 normal mode> count G    光标移动到count行  03
 normal mode> count %    光标移动到文档的第百分之count处  03
 normal mode> count $    移动到第count行的末尾, 注意, count ^ 并不会移动到第count行的行首 03
+normal mode> ctrl a/x    向光标所在位置及光标之下寻找数字,光标移动到数字上,并将数字加/减1  26
 normal mode> ctrl D/U    向下/上scroll半页  03
 normal mode> ctrl F/B    向下/上scroll一页  03
 normal mode> ctrl o    jump back  01
@@ -23,60 +75,24 @@ normal mode> ctrl ^    在同时打开多个文件的情况下,在当前文件�
 normal mode> ctrl +/-    增大/减小当前窗口  08
 normal mode> ctrl ]    跳到光标所在位置的超链接处  01
 normal mode> D C    delete/change到行尾  04
-normal mode> :edit file    关闭当前文件并打开file进行编辑(注意保存原文件,不过也没关系,你不保存就会有警告的)  07
 normal mode> f char    行内查找char,另外,";"是重复查找,","是重复反向查找 03
-normal mode> :file another_file    感觉跟saveas好像没区别啊  07
-normal mode> :filetype on    使vim能识别文件类型(语法高亮等功能依赖这个设置)  05
-normal mode> :filetype plugin on    使用文件类型特定的plugin, 实现也很简单, 只要放在对应的路径下就好了, 因为每种文件类型都有自己的插件路径(比如/usr/share/nvim/runtime/tfplugin/vim.vim)(注意,有时候同个filetype可能有多个插件,可以通过命名来使其不冲突,如下命名方式是有效的(ftplugin/<filetype>.vim)(ftplugin/<filetype>_<name>.vim)(ftplugin/<filetype>/<name>.vim))  05
 normal mode> "f[y,d]as    复制/删除一个sentence并且把内容放在寄存器f中;要粘贴的话就用"fp  07
 normal mode> gq    格式化;    格式化的标准就是自己的配置文件里面的设置;  10
 normal mode> gt    goto tab  08
 normal mode> g[u,U,~]    将文本变成小写/大写/切换大小写;  double就可以应用到整行, 比如guu gUU g~~;  10
-normal mode> help    非常全面的help写法  02
+normal mode> gv    选中上次选中的位置,并把光标移到上次的位置  26
 normal mode> H M L    光标移动到当前页顶/中/底  03
 normal mode> J    join, 把光标放在第1行首,然后按J,结果是下一行自动接在光标行后,且自动加空格  02
-normal mode> :jumps    列出jump历史  03
-normal mode> :map <F5> i{<Esc>ea}<Esc>    将F5键映射成一个功能:用{}包住当前光标到word尾  05
-normal mode> :map    列出所有map,注意不加s  05
 normal mode> `mark    jump到上个mark处, ``会在上个mark和当前位置之间来回跳, 原因是`命令本身也是jump的意思(需要注意的是jump的定义:使用命令移动到非当前行的动作就是一个jump; 而jk这样的不算jump, 就算你前面加了count看起来很像使用命令去移动的也不算); 可以使用ma来将光标处设为mark a,这样就可以`a来jump到这个位置,总共可以设置a-z26个mark; :marks列出所有mark; 但是小写的mark是local to file的,而大写的mark可以用在list of files中  03
 normal mode> !{motion}{program}    将motion这个range的文本使用program来filter;    motion可以用!来表示当前行,比如!!date可以在当前文件中加时间戳;    :read !ls比较tricky, 意思是把ls的输出put到光标后;其实直接!jls也是类似的效果,但是这样就必须输入motion;    :write !wc输出该文件的单词计数,但是:read !wc写的全是0,感觉还是没搞懂;  10
 normal mode> ! move cmd    move范围内的文本被当作后续cmd命令的输入, 结果输出到原地
 normal mode> nvim -d a b    diff模式看两个文件的区别  08
-normal mode> nvim (-o/O) a b c    同时打开三个文件(水平分割打开/垂直分割打开);:next移动到下个文件,:previous移动到上个文件,移动前原文件要保存否则会报错,:wnext=保存后移动到下一个文件,嫌麻烦可以:set autowrite;:args显示所有文件和当前位置  07
-normal mode> :only    关闭所有其它窗口, 只保留当前窗口  08
 normal mode> o/O    在v进行选择时,把光标移动到最边上/同行最边上  04
-normal mode> operator    d, c这样的都叫operator,典型的vim操作是 operator move,比如dw, d4w这样的  04
-normal mode> :options    列出所有option以及它们的值  05
-normal mode> :packadd vimball    引入vimball包/插件. 该命令执行后, :help vimball也work了,原因是同时将包的路径加入了runtimepath. 传统加插件的方式如下几步:1.创建正确的目录 2.将得到的包解压到正确的目录 3.在vimrc文件中加入该插件  05
-normal mode> /pattern$    只搜索在行尾的pattern  03
-normal mode> /^pattern    只搜索在行首的pattern  03
-normal mode> /pattern    搜索pattern, n是向右重复搜索, N是向前; 可以用上下键来使用历史搜索的pattern  03
 normal mode> p/P    put到光标后/前  04
 normal mode> qa    宏录制到寄存器a, 注意,寄存器是通用的, 比如你可以把录制的宏用"ap给粘贴出来,改好以后再"ay给复制回去,然后用@a来播放; 再次按q就结束录制;@q可以看成一个命令,前面可以加count,用来播放宏  10
 normal mode> qA    录制宏并append到寄存器a中;这里大写的意思就是append; 所有使用寄存器的地方,都可以用大写形式来表示append  10
-normal mode> :[q/w]all    关闭/保存所有窗口  08
-normal mode> :[range]g/pattern/cmd    global命令,可以搜索一个pattern并且在目标行执行命令;这里的命令必须是Ex命令,也就是用冒号开头的那些;    默认作用于全文,而不像其它命令默认作用于当前行;    默认使用print命令;    g!指在所有非匹配行执行命令;  e.g. :g+//+s/foobar/barfoo/g意思是在所有包括//文本的行内把foobar替换为barfoo  10
-normal mode> :[range]read file    将file的内容输入到光标之后;    支持range,比如:$r file将内容输入到range之后;  10
-normal mode> :[range]write file    将range内容写入到file;    也可以>>file,就是append;  10
-normal mode> :%s/\([^,]*\), \(.*\)/\2 \1/g    这是一个比较复杂的搜索替换, 意思是把 a, b 这样的替换成 b a ,特殊用法是中括号表示任意1个括号内字符,但是前面加了^意思是不能是逗号,圆括号表示分组,后面的\1 \2就是引用了pattern里面的分组  12
-normal mode> :saveas another_file    另存为, 当前文件不变, 另存为另一个文件, 并且直接打开另一个文件进行编辑  07
-normal mode> :scriptnames    显示许多.vim文件路径, 比如 init.vim  03
-normal mode> :set ignorecase/noignorecase    搜索时是否忽略大小写  03
-normal mode> :set (no)hlsearch    搜索时是否显示高光  03
-normal mode> :set (no)incsearch    在输入搜索pattern时,是否实时显示匹配结果,建议打开    03
-normal mode> :set number/nonumber    显示/关闭行号  03
-normal mode> :set ruler    在右下角显示光标位置  03
-normal mode> :%s/from/to/flags    搜索替换;这里的%是一个range,也可以用v来选择,不用的话就是当前行;from是要被替换的pattern;to是用来替换的pattern;默认只替换一个,如果想替换所有的话就在flags的位置用g这个flag就好了,另外的flags有p,用来回显上个改变的行,c用来交互式确认是否替换;另外,如果pattern中有/记得转义,或者用+代替命令中的/也是可行的;另外关于range,常见的有 1,5 用来表示1-5行, 或者单独的数字表示单独行, .表示当前行, $表示最后一行, 所以 % 其实跟 .,$ 是一样的  10
-normal mode> :'t+1,.g/^/move 't    将mark t到当前行的所有内容reverse到mark t以上;  因为有一个EX命令叫move  12
-normal mode> :tabedit file    开新tab打开文件  08
-normal mode> :tabonly    关闭所有其它tab,只保留当前tab  08
-normal mode> :tab    可以用在任何一个打开新窗口的命令前,比如:tab split,于是新窗口会在新tab中打开  08
-normal mode> text object    aw iw as is a( i(这样的就叫text object  04
-normal mode> /\<the\>    全词匹配搜索the, \用来转义, \<表示以the开始, \>表示以the结束  03
 normal mode> u    undo, 撤销上个操作  02
 normal mode> vim -R/-M file    只读,但仍然可编辑,只是会有警告/只读,不可编辑  07
-normal mode> :(v)split file    在新窗口打开file;如果不加file的话就是打开当前文件  08
-normal mode> :write >> file    把当前选中的内容append到已经存在的file末尾,如果不选的话就是全文  07
 normal mode> x/X    删除光标所在位置/左边字符  04
 normal mode> "*y/"*p    将vim中内容复制到系统clipboard/将系统clipboard粘贴到vim  04
 normal mode> y/Y    copy,为什么不叫c,因为c已经是change了/复制到行尾  04
@@ -84,30 +100,99 @@ normal mode> zz zt zb    将当前行scroll到页中/顶/底  03
 normal mode> ~    切换光标所在位置的大小写,并光标右移一个char  04
 normal mode> #/*    向上/下搜索光标指向的单词(全词匹配), g#/g* 可以用来部分匹配  03
 normal mode> %    括号匹配,若当前光标处是括号,则移动到匹配的括号处;否则,在行内向右寻找括号并移动到括号处;如果行内没有括号,就没有作用  03
-normal mode> /\.    搜索点号. 转义是因为pattern是按照正则来搜索的,而正则的点号是匹配任意一个字符  03
 normal mode> @@    播放上一个宏  10
 normal mode> .    重复刚才的change, 但不重复u/ctrl R/:command  04
-cmd line> shift/ctrl left    在cmd line下左移一个word  20
-cmd line> ctrl b/e    等于home/end  20
-cmd line> ctrl w/u    删除光标所在位置或之前的一个word/删除整个line只剩下冒号  20
-normal mode> :!{program}    就像在shell里面执行program一样  21
-normal mode> :r !{program}    执行并把输出读进来  21
-normal mode> :w !{program}    把文本中的内容读进program的输入  21
-normal mode> :[range]!{program}    吃掉range作为输入,并用输出替换原来的range  21
-concept> shada    就是我们编辑文件时会有一堆寄存器,历史命令什么的副产物,这些东西会被保存在shada文件中,可以通过设置来保存shada文件并在以后编辑的时候load进来  21
-normal mode> :browse oldfiles    历史文件  21
-normal mode> :[w,r]shada file    将shada存到file里/从file里读取shada  21
-insert mode> ctrl w    删除前一个word  24
-insert mode> ctrl u    删除光标到该行第一个非blank  24
-insert mode> ctrl p    自动补全;是向上搜索可选的补全项的;    当光标位置之前没有char时,搜索到的是前一个单词,重复按就重复向上搜索;    而向下搜索是ctrl n;  24
-insert mode> ctrl x ctrl f/l/d/i/k/t/]/v    如果你知道要从哪里补全, 可以用这些复杂的选项  24
-insert mode> ctrl x ctrl o    源码智能补全, 比如有一个结构体s,然后你指针p指向一个s,然后输入p->再按这个组合键,就会根据结构体s的定义来进行补全;前提是进行一些设置  24
-insert mode> ctrl a    将你上次在插入模式的输入给粘贴出来;    ctrl @ 相同功能,但是自动退出插入模式;  24
-insert mode> ctrl y/e    将光标上/下方的char输入到光标位置,并向右移动光标;  24
-insert mode> ctrl r register    将寄存器内容粘贴出来;问题在于比如寄存器里面有<BS>这样的操作时,这会把<BS>这样的字符也粘贴出来;如果真的想把<BS>作为操作来重放而不是粘贴成字符的话,用ctrl r ctrl r register;  24
-normal mode> :abbreviate    列出所有缩写  24
-normal mode> :noreabbrev a b    将a作为b的缩写,但是防止递归  24
-insert mode> ctrl v    插入特殊字符(<Ecs>这样的)  24
-insert mode> ctrl k    插入特殊字符(美元符号之类的)  24
-insert mode> ctrl o command    在插入模式下执行normal模式的command  24
-该看25了
+search> /pattern$    只搜索在行尾的pattern  03
+search> /^pattern    只搜索在行首的pattern  03
+search> /pattern    搜索pattern, n是向右重复搜索, N是向前; 可以用上下键来使用历史搜索的pattern  03
+search> /\<the\>    全词匹配搜索the, \用来转义, \<表示以the开始, \>表示以the结束  03
+search> /\.    搜索点号. 转义是因为pattern是按照正则来搜索的,而正则的点号是匹配任意一个字符  03
+set option> :set ignorecase/noignorecase    搜索时是否忽略大小写  03
+set option> :set ignorecase smartcase    智能敏感,如果你搜索的pattern里面有一个及以上的大写,那就大小写敏感,否则不敏感;  27
+set option> :set (no)hlsearch    搜索时是否显示高光  03
+set option> :set (no)ignorecase    搜索是是否大小写敏感;  27
+set option> :set (no)incsearch    在输入搜索pattern时,是否实时显示匹配结果,建议打开    03
+set option> :set number/nonumber    显示/关闭行号  03
+set option> :set ruler    在右下角显示光标位置  03
+shell script> cat file | vim -S change.vim -    另外一种对file进行Ex命令处理的脚本写法, 基本等价于 vim -e -s producer < change.vim;    但是由于读入的是标准输入,是没有名字的,所以需要自己saveas才行;  26
+shell script> ls | vim -    用 - 来读取stdin, 但是不用好像也可以;  26
+shell script> nvim (-o/O) a b c    同时打开三个文件(水平分割打开/垂直分割打开);:next移动到下个文件,:previous移动到上个文件,移动前原文件要保存否则会报错,:wnext=保存后移动到下一个文件,嫌麻烦可以:set autowrite;:args显示所有文件和当前位置  07
+shell script> vim -e -s $file < change.vim    对file使用change.vim中的Ex命令进行处理;    -e表示用Ex命令来执行文件;    -s表示silent;  26
+shell script> vim -s script file    用script中的normal command来对file进行处理;    注意当-s不与-e同时出现时,意思是用normal command;  26
+shell script> vim -w/W script file    跟vim file的唯一区别在于, 所有的按键会被记录在script文件中;    -w追加-W覆盖;  26
+search> /\cword或者/\Cword    c指忽略大小写,C指大小写敏感,优先于option进行判断;  27
+search> /word/-2    搜索word,并将光标置于找到的word之上两行;正数的话就是之下2行;  27
+search> /word/e    搜索word,并将光标置于word的末尾;e后面可以加减数字,来改变位置;  27
+search> /word/b    搜索word,并将光标置于word的开头;b后面可以加减数字,来改变位置;  27
+search> /    重复上一个搜索,并保留offset;跟normal mode的n是等价的;  27
+search> //    重复上一个搜索,忽略offset;后面可以跟b e之类的,来使用新的offset;  27
+search> /a*    搜索任意次重复的a,包括0次;其实就是正则,用*来匹配前一个字符;  27
+search> /\(ab\)*    搜索任意次重复的ab;括号需要转义;  27
+search> /a+    搜索任意次重复的a,不包括0次;  27
+search> /folders\=    匹配folder或者folders,=表示可选项,0或1次;跟?应该是等价的  27
+search> /ab\{3,5}    匹配abbb abbbb abbbbb;注意这个转义只转左边;  27
+search> /ab\{-3,5}    匹配abbb abbbb abbbbb;尽量少地匹配;也就是非贪心;因为默认是贪心的;  27
+search> /a.\{-}b    匹配a后面跟任意个b,但非贪心;  27
+search> /a.*b    匹配a后面跟任意个b,但贪心;  27
+search> /end\(if\|while\|for\)    匹配endif endwhile endfor  27
+search> /[0-9a-f]    匹配0123456789abcdef中的任意字符1次;如果要匹配-的话,把-放在中括号的最前面;  27
+search> /[^"]    匹配任意不是"的字符一次;  27
+search> /\a    alphabetic, 等价于 /[a-zA-z]  27
+search> /\d    digit, 等价于 /[0-9]  27
+search> /\D    none digit, 等价于 /[^0-9]  27
+search> /\x    hex, 等价于 /[0-9a-fA-F]  27
+search> /\X    none hex, 等价于 /[^0-9a-fA-F]  27
+search> /\s    white space, 等价于 /[	], 也就是<Tab>和<Space>  27
+search> /\S    none white space  27
+search> /\l    lower alpha, 等价于 /[a-z]  27
+search> /\L    none lower alpha, 等价于 /[^a-z]  27
+search> /\u    upper alpha, 等价于 /[A-Z]  27
+search> /\U    none upper alpha, 等价于 /[^A-Z]  27
+search> /one\_stwo    匹配one和two中间有space或者linebreak;    注意,很多都可以通过_来匹配linebreak;  27
+search> /"\_[^"]*"    匹配双引号括起来的东西,并且允许跨行;  27
+normal mode> zf[text object, motion]    折叠  28
+normal mode> zo/zc    打开/关闭当前折叠块  28
+others> 看了29,30,感觉在多文件上还是太繁琐了,还得先有tags文件才能进行跳转什么的,太麻烦了.
+concept> map    其实就是把一系列按键序列转换为另一系列按键序列
+Ex command> :map <F2> GoDate: <Esc>:read !date<CR>kJ    按键映射,把F2键的功能变成在文件底部打时间戳;    注意<CR>用来使命令执行;但是我试了<Enter>也是可以的;  40
+Ex command> :map/vmap/nmap/omap/map!/imap/cmap    单独使用的话就是列出在这些模式下已经定义的map列表;后面跟按键序列的话就是在这个模式下使用这个映射;  40
+Ex command> :map    注意,map是可能递归的,如果不想递归可以使用noremap;  40
+Ex command> :map <Space> N    把空格映射到N;需要注意的是空格或者 | 这样的特殊字符不能直接映射,需要变成<Space>, <Bar>这样的文本形式才可以映射;  40
+others> 映射和缩写的区别:映射是输入最后一个字符触发,缩写是输入一个non-word字符触发;  40
+others> 映射在有相同前缀时是通过后续输入来判断使用哪个map的;  40
+Ex command> :command DeleteFirst 1delete    自定义一个新命令叫DeleteFirst,可以通过:DeleteFirst来使用,等价于使用:1delete  40
+Ex command> :command    列出所有自定义命令;  40
+Ex command> :command -nargs=0/1/*/?/+ NewCommand somecommand    自定义命令可以加参数  40
+Ex command> :command -range NewCommand somecommand    自定义命令可以加range,默认为行  40
+Ex command> :autocmd [group] {events} {file-pattern} [++nested] {command}    自动命令,在事件触发时自动执行;  40
+vim script> let {var} = {expr}    变量赋值;在使用变量的时候也得用let  41
+vim script> while {condition} {stmts} endwhile    while循环  41
+vim script> for i in range(1, 4) {stmts} endfor    rangefor,闭区间  41
+vim script> s:var    表明该变量只属于该文件  41
+vim script> b:var    表明该变量只属于该buffer  41
+vim script> w:var    表明该变量只属于该window  41
+vim script> g:var    表明该变量global  41
+vim script> v:var    表明该变量是vim预定义变量 41
+vim script> unlet(i) s:count    舍弃变量,加!强制执行不输出错误信息  41
+vim script> if !exists("s:count") let s:count = 0 end if    如果不存在s:count变量,则创建变量;注意exists函数意思是看参数的值是否作为变量名,所以这里加"";  41
+vim script> 除了0以外都是true;    if "true"的判定是false,因为如果判断数字的话,以非数字开头的字符串都被认为是0;  41
+vim script> let var = "test"    字符串变量,用双引号是最普通的,注意转义;或者用单引号,此时引号内默认全部转义,如果想在变量中包含单引号的话,就用两个单引号;  41
+vim script> $NAME    环境变量,比如可以 :echo "Your home dir is " $HOME  41
+vim script> &name    option,比如可以 :echo "Your tabstop value is " &ts  41
+vim script> @r    register,比如可以  41
+vim script> a ? b : c    三元表达式  41
+vim script> echo "foo" .. "bar"    ..用来拼接字符串  41
+vim script> if {condition} {stmts} elseif {condition} {stmts} endif    if-else  41
+vim script> if a =~ b    判断字符串a能否匹配pattern b;    =~是匹配,!~是不匹配;匹配规则就是vim中搜索时匹配的规则;  41
+vim script> execute "str"    将字符串作为一个expr来执行;只能执行Ex command;  41
+vim script> normal gg=G    执行gg=G,注意这个跟execute不一样,这个直接就不是字符串;如果想用字符串来执行, 就得结合execute命令了,比如 :execute "normal " .. normal_commands;  41
+vim script> let optval = eval('&' .. optname)    eval()用来得到字符串作为表达式的值;这行等价于 exe 'let optval = &' .. optname;  41
+vim script> call func()    用来调用函数,但是有时候在表达式里面不用call,比如 let line = getline(".") ,感觉是单独使用的时候需要加call;  41
+vim script> function[!] {name}({var1},{var2} ...) [range] {body} endfunction    定义函数;注意函数中的变量前缀是a:    另外,如果有range,那么可以在函数中直接使用a:firstline和a:lastline;因为函数也是可以前面加range然后再call的,比如:10,30call func();如果定义不带range但是执行的时候有range,那么每行都执行一次;    如果定义中有!,表示重新定义,覆盖原有定义;  41
+vim script> function func(start, ...)    定义可变数量参数;此时除了可以使用a:start以外,还可以使用a:0表示额外的参数数量,a:1表示第一个可选参数;a:000是所有额外参数的List;  41
+normal mode> :function    显示所有自定义函数;后面可以跟函数名,来查看函数代码;  41
+vim script> let Afunc = function('Test')    函数引用,其实就是现在Afunc是一个函数,调用的时候是这样,比如:echo call(Afunc, []);注意的点,大写开头,用call()调用,传参的时候传一个List;  41
+vim script> let alist = [] call add(alist, 'foo')    声明一个list,并将'foo'add到这个list;    list不限类型;    两个list可以用+来拼接;    41
+vim script> let adict = {'one' : 'hello'} echo adict['one']    声明一个dict,并按key来取值;  41
+vim script> function adict.func(line) dict    这样的声明说明这个函数是通过dict来调用的;    其实就相当于把adict当成一个object来用了,然后给这个adict加上一些方法;  41
+others> 在41里面有关于如何写插件的一些详细的例子;  41

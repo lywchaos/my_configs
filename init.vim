@@ -1,14 +1,18 @@
 set showmode
-set ignorecase
+set ignorecase smartcase
 set number
 set ruler
 set showcmd
-set nohlsearch
+set hlsearch
+set incsearch
+set shiftwidth=4
 set autoindent
 set softtabstop=4
 set tabstop=4
 set rtp +=~/.vim
 set mouse=a
+set cursorcolumn
+set cursorline
 
 syntax on
 filetype plugin indent on
