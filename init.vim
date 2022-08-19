@@ -32,7 +32,7 @@ iab ppp <p></p><Left><Left><Left><Left>
 " html删除线
 iab htmldel <del></del><Left><Left><Left><Left><Left><Left>
 
-noremap kj <Esc>
-noremap! kj <Esc>
+noremap <Space>kj <Esc>
+noremap! <Space>kj <Esc>
 nnoremap <Space>h gT
-nnoremap <Space>l gT
+nnoremap <Space>l gt
