@@ -9,7 +9,6 @@ set shiftwidth=4
 set autoindent
 set softtabstop=4
 set tabstop=4
-set rtp +=~/.vim
 set mouse=a
 set cursorcolumn
 set cursorline
@@ -17,6 +16,8 @@ set cursorline
 syntax on
 filetype plugin indent on
 
+set rtp +=~/.config/nvim
+set rtp +=~/.vim
 call plug#begin()
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 Plug 'preservim/nerdtree'
@@ -31,5 +32,7 @@ iab ppp <p></p><Left><Left><Left><Left>
 " html删除线
 iab htmldel <del></del><Left><Left><Left><Left><Left><Left>
 
-inoremap kj <Esc>
-vnoremap kj <Esc>
+noremap kj <Esc>
+noremap! kj <Esc>
+nnoremap <Space>h gT
+nnoremap <Space>l gT
