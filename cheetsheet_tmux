@@ -1,8 +1,0 @@
-pre z : current window fullscreen and back
-pre d : tmux detach
-tmux attach -t 0 : tmux attach session number 0
-pre ? : show all command
-pre , : rename current window
-pre o : switch between panes
-pre p : switch to previous window
-pre o : switch to next window
